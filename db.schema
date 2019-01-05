@@ -1,0 +1,13 @@
+CREATE TABLE datastore (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	sensorid VARCHAR(16) NOT NULL,
+	batterylevel INTEGER NOT NULL,
+	humidity INTEGER NOT NULL,
+	light INTEGER NOT NULL,
+	motion INTEGER NOT NULL,
+	temperature REAL NOT NULL,
+	timestamp TEXT NOT NULL
+);
+INSERT INTO datastore(sensorid,batterylevel,humidity,light,motion,temperature,timestamp) VALUES ("a81758fffe031a81", 3500, 20, 10, 0, 23.9, "05-12-2018 16:11:31.0745");
+INSERT INTO datastore(sensorid,batterylevel,humidity,light,motion,temperature,timestamp) VALUES ("a81758fffe031a79", 3400, 10, 0, 1, 13.9, "05-12-2018 16:11:31.0745");
+INSERT INTO datastore(sensorid,batterylevel,humidity,light,motion,temperature,timestamp) VALUES ("a81758fffe031a79", 3400, 10, 0, 1, 13.9, "05-12-2018 16:11:31.0745");
