@@ -11,16 +11,32 @@ The microservices are:
 
 For simplicity the API Gateway also serves the static main-page with the Javascript embedded to call the API GW endpoints.
 
-### Port 7000 is for the API GW which can handle
+### The API GW
+ 
+It uses port 7000 and handles the below endpoints
 ```
-* /index.html
-* /api/sensors [GET/POST]
-* /api/sensors/{sensor-id} [GET]
+* /index.html                [GET]
+* /api/sensors               [GET]
+* /api/sensors/{sensor-id}   [GET]
 ```
 An optional ?number=X URL parameter can be passsed to limit the number of datapoints returned.
 
-### Port 7001 is for the Datastore which for now stores the data in a simple SQLITE3 local db
+### The DataStore
+
+It uses port 7001 and handles the below endpoints
 ```
-* /api/sensors
-* /api/sensors/{sensor-id}
+* /api/sensors               [GET/POST]
+* /api/sensors/{sensor-id}   [GET]
 ```
+The data for now is stored in a simple SQLite3 lcoal database.
+
+### The Collector
+
+It does not need a port because it is simply implementing a functionality as described on the architecture.
+It has two hard-coded timers defined. One defines how often to refresh the SSiO auth token and another defines how often to poll and store new Data from SSiO.
+
+
+### Plans for improvement:
+* migrate away from SQLite3 to PostgreSQL
+* fully implement it via docker containers
+* deploy in a docker swarm
