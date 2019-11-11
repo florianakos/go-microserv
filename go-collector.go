@@ -207,8 +207,8 @@ func saveToDatastore(dataToStore Record) {
 	}
 
 	// check the returned STATUS CODE of the HTTP POST.
-	if (resp.StatusCode == 200) {
-		fmt.Println("HTTP POST to DATASTORE successful!")	
+	if resp.StatusCode == 200 {
+		fmt.Println("HTTP POST to DATASTORE successful!")
 	} else {
 		body, _ := ioutil.ReadAll(resp.Body)
 		fmt.Printf("HTTP POST to DATASTORE failed!\n-StatusCode: \t%d\n-Message:\t%v\n", resp.StatusCode, string(body))

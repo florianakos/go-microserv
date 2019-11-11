@@ -1,8 +1,8 @@
 package main
 
 import (
-	_"bytes"
-	_"crypto/tls"
+	_ "bytes"
+	_ "crypto/tls"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -12,10 +12,10 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	_"time"
+	_ "time"
 )
 
-// global variable to hold the DATASTORE address 
+// global variable to hold the DATASTORE address
 // (TODO: change to something more dynamic)
 const DATASTORE_ADDR string = "http://localhost:7001"
 
@@ -23,7 +23,7 @@ type MyError struct {
 	Error string `json:"error"`
 }
 
-// helper function to return a JSON response 
+// helper function to return a JSON response
 func sendJSONError(w http.ResponseWriter, code int, message string) {
 	response, _ := json.Marshal(&MyError{Error: message})
 	w.Header().Set("Content-Type", "application/json")
@@ -31,7 +31,7 @@ func sendJSONError(w http.ResponseWriter, code int, message string) {
 	w.Write(response)
 }
 
-// helper function to return a JSON response 
+// helper function to return a JSON response
 func sendJSONOkay(w http.ResponseWriter, code int, payload string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
@@ -51,7 +51,7 @@ func mainPageHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 		io.WriteString(w, string(dat))
-		
+
 	} else if vars["file"] == "index.js" {
 		w.Header().Set("Content-Type", "text/javascript; charset=utf-8")
 		dat, err := ioutil.ReadFile("./static/index.js")
@@ -59,8 +59,8 @@ func mainPageHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 		io.WriteString(w, string(dat))
-		
-	} else /*if vars["file"] == "index.html"*/  {
+
+	} else /*if vars["file"] == "index.html"*/ {
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		dat, err := ioutil.ReadFile("./static/index.html")
 		if err != nil {
@@ -106,7 +106,7 @@ func main() {
 
 	fmt.Printf("Starting server on port: %s\n\n", os.Args[1])
 
-	// configure and start MUX router	
+	// configure and start MUX router
 	r := mux.NewRouter()
 	r.HandleFunc("/{file}", mainPageHandler).Methods("GET")
 	r.HandleFunc("/api/sensors", getSensorData).Methods("GET")
