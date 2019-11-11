@@ -12,7 +12,7 @@ import (
 	"strconv"
 )
 
-// struct that represents rows in the database table
+// Record is a struct that represents rows in the database table
 type Record struct {
 	Id           int     `json:"id"`
 	Sensorid     string  `json:"sensorid"`
@@ -24,6 +24,7 @@ type Record struct {
 	Timestamp    string  `json:"timestamp"`
 }
 
+// MyErris is a struct representing custom error type
 type MyError struct {
 	Error string `json:"error"`
 }
@@ -54,11 +55,12 @@ func sendJSONOkay(w http.ResponseWriter, code int, payload interface{}) {
 	w.Write(response)
 }
 
+// GetAllSensorData is a helper function to get Sensor data from all sensors...
 func GetAllSensorData(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	// temp variable to hold the querystring
-	var queryStr = ""
+	var queryStr string
 
 	// check w
 	limit := r.URL.Query().Get("number")
@@ -105,6 +107,7 @@ func GetAllSensorData(w http.ResponseWriter, r *http.Request) {
 	sendJSONOkay(w, http.StatusOK, dbRecords)
 }
 
+// GetSensor is a helper function to get data from single sensor
 func GetSensor(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
@@ -112,7 +115,7 @@ func GetSensor(w http.ResponseWriter, r *http.Request) {
 	sensorID := mux.Vars(r)["sensorid"]
 
 	// temp string to hold the queryString
-	var queryStr string = ""
+	var queryStr string
 
 	limit := r.URL.Query().Get("number")
 	if limit == "" {
@@ -161,6 +164,7 @@ func GetSensor(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// SaveSensorData helps to save data to the database...
 func SaveSensorData(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 

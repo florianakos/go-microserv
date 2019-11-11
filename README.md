@@ -1,5 +1,7 @@
 # Very Simple Microservices architecture in Go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/florianakos/go-microserv)](https://goreportcard.com/report/github.com/florianakos/go-microserv)
+
 Simple microservices project in GO for M7024E @ LTU
 
 ![Basic architecture](https://github.com/florianakos/go-microserv/blob/master/static/Screenshot%20from%202019-01-05%2023-15-12.png "Basic Architecture")
@@ -12,7 +14,7 @@ The microservices are:
 For simplicity the API Gateway also serves the static main-page with the Javascript embedded to call the API GW endpoints.
 
 ### The API GW
- 
+
 It uses port 7000 and handles the below endpoints
 ```
 * /index.html                [GET]

@@ -15,10 +15,10 @@ import (
 	_ "time"
 )
 
-// global variable to hold the DATASTORE address
-// (TODO: change to something more dynamic)
+// DATASTORE_ADDR is a global variable to hold the DS address
 const DATASTORE_ADDR string = "http://localhost:7001"
 
+// MyError custom error type
 type MyError struct {
 	Error string `json:"error"`
 }

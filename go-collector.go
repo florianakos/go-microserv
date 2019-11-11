@@ -11,22 +11,22 @@ import (
 	"time"
 )
 
-// global constant to store the SSIO auth URL
+// SSIO_URL global constant to store the SSIO auth URL
 const SSIO_URL string = "http://130.240.134.128:9000/oauth2/token"
 
-// global constant to store the DATASTORE remote address
+// DATASTORE_ADDR is a global constant to store the DATASTORE remote address
 const DATASTORE_ADDR string = "http://localhost:7001"
 
 // global constant to control collector time interval
-const collector_interval time.Duration = 5
+const collectorInterval time.Duration = 5
 
 // global variable to control sleep time
-const token_refresh_interval time.Duration = 60
+const tokenRefreshInterval time.Duration = 60
 
 // global accesstoken for the SSiO platform
-var access_token string = "NULL"
+var accessToken string = "NULL"
 
-// Struct to represent entries in the database table
+// Record is a struct to represent entries in the database table
 type Record struct {
 	Id           int     `json:"id"`
 	Sensorid     string  `json:"sensorid"`
@@ -38,15 +38,15 @@ type Record struct {
 	Timestamp    string  `json:"timestamp"`
 }
 
-// struct to parse SSIO auth request JSON
+// SSIOToken is a struct to parse SSIO auth request JSON
 type SSIOToken struct {
-	AccessToken  string `json:"access_token"`
+	AccessToken  string `json:"accessToken"`
 	TokenType    string `json:"token_type"`
 	ExpiresIn    int    `json:"expires_in"`
 	RefreshToken string `json:"refresh_token"`
 }
 
-// Struct to parse SSIO JSON data response
+// SSIOResponse is Struct to parse SSIO JSON data response
 type SSIOResponse struct {
 	ContextResponses []struct {
 		ContextElement struct {
@@ -71,7 +71,7 @@ type SSIOResponse struct {
 	} `json:"contextResponses"`
 }
 
-// refresh access_token indefinitely, every 1 minute
+// refresh accessToken indefinitely, every 1 minute
 func refreshAccessToken() {
 
 	for {
@@ -109,11 +109,11 @@ func refreshAccessToken() {
 		}
 
 		// update the global variable
-		access_token = newCredentials.AccessToken
+		accessToken = newCredentials.AccessToken
 
 		// sleep for a minute before starting again...
-		time.Sleep(token_refresh_interval * time.Second)
-		// fmt.Printf("TickTock from the token_refresh goroutine (token=%s)\n", access_token)
+		time.Sleep(tokenRefreshInterval * time.Second)
+		// fmt.Printf("TickTock from the token_refresh goroutine (token=%s)\n", accessToken)
 	}
 }
 
@@ -127,7 +127,7 @@ func querySSiO(sensorID string) Record {
 		`", "type": "LORA_Sensor","isPattern": false}]}`)
 
 	req, err := http.NewRequest("POST", ssioURL, bytes.NewBuffer(payload))
-	req.Header.Set("X-Auth-Token", access_token)
+	req.Header.Set("X-Auth-Token", accessToken)
 	req.Header.Set("Content-Type", "application/json")
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -196,6 +196,9 @@ func saveToDatastore(dataToStore Record) {
 
 	// prepare an HTTP POST request with Header set to "app/json"
 	req, err := http.NewRequest("POST", DATASTORE_ADDR+"/api/sensors", bytes.NewBuffer(jsonStr))
+	if err != nil {
+		fmt.Println(err)
+	}
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 
@@ -229,6 +232,6 @@ func main() {
 		saveToDatastore(querySSiO("a81758fffe031a83"))
 		saveToDatastore(querySSiO("a81758fffe031a82"))
 
-		time.Sleep(collector_interval * time.Second)
+		time.Sleep(collectorInterval * time.Second)
 	}
 }
