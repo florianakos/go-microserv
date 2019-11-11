@@ -24,7 +24,7 @@ type Record struct {
 	Timestamp    string  `json:"timestamp"`
 }
 
-// MyErris is a struct representing custom error type
+// MyError is a struct representing custom error type
 type MyError struct {
 	Error string `json:"error"`
 }
